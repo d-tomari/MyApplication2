@@ -93,7 +93,7 @@ public class Game extends Activity {
             }
         }
 
-        // ブロックやマップの色付け?
+        // ブロックやマップの色付け
         private void paintMatrix(Canvas canvas, int[][] matrix, int offsetx, int offsety, int color) {
             ShapeDrawable rect = new ShapeDrawable(new RectShape());
             rect.getPaint().setColor(color);
@@ -129,6 +129,7 @@ public class Game extends Activity {
             return true;
         }
 
+        // ブロックが落ちた時に固定する
         void mergeMatrix(int[][] block, int offsetx, int offsety) {
             for (int y = 0; y < block.length; y ++) {
                 for (int x = 0; x < block[0].length; x ++) {
@@ -178,6 +179,7 @@ public class Game extends Activity {
             map = newMap;
         }
 
+        // 画面に表示するものの色等の設定
         /**
          * Draws the 2D layer.
          */
@@ -196,7 +198,7 @@ public class Game extends Activity {
             paintMatrix(canvas, map, 0, 0, 0xFF808080);
         }
 
-        //ブロックの回転っぽい
+        //ブロックの回転
         int[][] rotate(final int[][] block) {
             int[][] rotated = new int[block[0].length][];
             for (int x = 0; x < block[0].length; x ++) {
@@ -325,7 +327,7 @@ public class Game extends Activity {
         }
         //======================================================================================
 
-        //キー押下時の動作(スマホなのでタップ?)
+        //キー押下時の動作　※実機(スマホ)で動かす時は使用しないコード
         //センターキー :ブロックの回転?
         //右キー : 右に移動　x軸に+1
         //左キー : 左に移動　x軸に-1
@@ -396,7 +398,7 @@ public class Game extends Activity {
                             clearRows();
                             //消した列数が10以上でリザルト画面に遷移　
                             //その時消した列数の数を渡す
-                            if(deleteCount >= 2){
+                            if(deleteCount >= 10){
                                 Intent intentGoResult = new Intent(getApplication(), Result.class);
                                 intentGoResult.putExtra("DELETE_LINE" ,deleteCount);
                                 startActivity(intentGoResult);
@@ -560,12 +562,15 @@ public class Game extends Activity {
         }
     }
 
+    //画面生成
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         View touch_view = new View( this );
         touch_view.setOnTouchListener( new FlickTouchListener() );
     }
+
+    //画面の再表示
     @Override
     protected void onResume() {
         super.onResume();
@@ -575,25 +580,25 @@ public class Game extends Activity {
         Looper.myQueue().addIdleHandler(new ActivityIdle());
     }
 
-    //ポーズ機能?　
+    //現在のActivityがバックグラウンドに移動する時に行われる処理
     @Override
     protected void onPause() {
         super.onPause();
         mFieldView.stopAnime();
     }
 
-    //やっていることは一個上と同じ
+    //現在のActivityが見えなくなる時に行われる処理
     @Override
     protected void onStop() {
         super.onStop();
         mFieldView.stopAnime();
     }
 
+    //画面が再表示された時の処理　処理自体の詳細は不明
     class ActivityIdle implements MessageQueue.IdleHandler {
         public ActivityIdle() {
             super();
         }
-
         public final boolean queueIdle() {
             return false;
         }

@@ -9,6 +9,7 @@ import android.view.MotionEvent;
  * ゲーム　タイトル
  */
 public class Title extends Activity {
+    //画面の生成
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

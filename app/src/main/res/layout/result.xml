@@ -18,8 +18,8 @@
 
     <TextView
         android:id="@+id/textView5"
-        android:layout_width="match_parent"
-        android:layout_height="74dp"
+        android:layout_width="97dp"
+        android:layout_height="77dp"
         android:text="touch" />
 
 </LinearLayout>

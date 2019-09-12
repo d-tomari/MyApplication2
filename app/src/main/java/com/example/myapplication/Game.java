@@ -14,7 +14,6 @@ import android.os.Looper;
 import android.os.Message;
 import android.os.MessageQueue;
 import android.util.Log;
-import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
@@ -92,6 +91,8 @@ public class Game extends Activity {
                 }
             }
         }
+
+
 
         // ブロックやマップの色付け
         private void paintMatrix(Canvas canvas, int[][] matrix, int offsetx, int offsety, int color) {
@@ -320,6 +321,12 @@ public class Game extends Activity {
                                 }
                             }
                         }
+                    }else{
+                        //画面がタッチされてフリックされなかった場合の処理
+                        int[][] newBlock = rotate(block);
+                        if (check(newBlock, posx, posy)) {
+                            block = newBlock;
+                        }
                     }
                     break;
             }
@@ -336,7 +343,7 @@ public class Game extends Activity {
         public boolean onKeyDown(int keyCode, KeyEvent event) {
 
             switch (keyCode) {
-                case KeyEvent.KEYCODE_DPAD_CENTER:
+                case KeyEvent.KEYCODE_DPAD_UP:
                     int[][] newBlock = rotate(block);
                     if (check(newBlock, posx, posy)) {
                         block = newBlock;
@@ -352,7 +359,6 @@ public class Game extends Activity {
                         posx = posx - 1;
                     }
                     break;
-                case KeyEvent.KEYCODE_DPAD_UP:
                 case KeyEvent.KEYCODE_DPAD_DOWN:
                     int y = posy;
                     while (check(block, posx, y)) { y++; }
@@ -394,6 +400,7 @@ public class Game extends Activity {
                         if (check(block, posx, posy + 1)) {
                             posy++;
                         } else {
+                            //TODO
                             mergeMatrix(block, posx, posy);
                             clearRows();
                             //消した列数が10以上でリザルト画面に遷移　
